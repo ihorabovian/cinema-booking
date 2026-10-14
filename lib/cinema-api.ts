@@ -19,3 +19,7 @@ export async function getFilms(): Promise<Film[]> {
 
   return data.films;
 }
+
+export function getImageUrl(path: string) {
+  return `${process.env.API_BASE_URL}${path}`;
+}
