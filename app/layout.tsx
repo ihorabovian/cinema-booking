@@ -6,7 +6,6 @@ import { Header } from "@/components/header";
 const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
-  weight: ["300", "400", "500", "600", "700", "800"],
 });
 
 export default function RootLayout({
