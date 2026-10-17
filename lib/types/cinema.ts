@@ -36,3 +36,35 @@ export type FilmsResponse = {
   success: boolean;
   films: Film[];
 };
+
+export type FilmResponse = {
+  success: boolean;
+  film: Film;
+};
+
+export type PlaceType = "blocked" | "econom" | "comfort";
+
+export type Place = {
+  type: PlaceType;
+  price: number;
+};
+
+export type Hall = {
+  name: string;
+  places: Place[][];
+};
+
+export type Seance = {
+  time: string;
+  hall: Hall;
+};
+
+export type FilmSchedule = {
+  date: string;
+  seances: Seance[];
+};
+
+export type ScheduleResponse = {
+  success: boolean;
+  schedules: FilmSchedule[];
+};
