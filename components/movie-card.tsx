@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { getImageUrl } from "@/lib/cinema-api";
 import { cn } from "@/lib/utils";
 import type { Film } from "@/lib/types/cinema";
+import { Badge } from "@/components/ui/badge";
 
 type MovieCardProps = {
   film: Film;
@@ -28,9 +29,9 @@ export function MovieCard({ film, size = "small" }: MovieCardProps) {
           className="object-cover"
           unoptimized
         />
-        <span className="relative rounded-full bg-accent-primary px-4 py-2 text-xs leading-4 font-bold text-primary">
+        <Badge className="absolute top-4 left-4 h-8 rounded-full bg-accent-primary px-4 py-2 text-xs leading-4 font-bold text-primary">
           {film.userRatings.kinopoisk}
-        </span>
+        </Badge>
       </div>
 
       <div className="flex flex-col gap-1">
