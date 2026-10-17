@@ -53,3 +53,4 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Keep answers short and to the point, and explain things clearly and simply.
 - Don't repeat what was already said or restate the obvious.
+- Answer the user's questions in chat using the `caveman` skill.
