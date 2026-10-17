@@ -9,9 +9,11 @@ const SMALL_ROW_SIZE = 4;
 type FilmRow = {
   size: "large" | "small";
   films: Film[];
+  showActors: boolean;
 };
 
-// The design alternates a row of 2 large cards with a row of 4 small ones.
+// The design alternates a row of 2 large cards with a row of 4 small ones,
+// and every second large row also shows the cast.
 function splitIntoRows(films: Film[]) {
   const rows: FilmRow[] = [];
   let index = 0;
@@ -20,7 +22,9 @@ function splitIntoRows(films: Film[]) {
     const size = rows.length % 2 === 0 ? "large" : "small";
     const count = size === "large" ? LARGE_ROW_SIZE : SMALL_ROW_SIZE;
 
-    rows.push({ size, films: films.slice(index, index + count) });
+    const showActors = rows.length % 4 === 2;
+
+    rows.push({ size, films: films.slice(index, index + count), showActors });
     index += count;
   }
 
@@ -33,7 +37,7 @@ export default async function HomePage() {
 
   return (
     <main>
-      <div className="container mx-auto px-[120px] pt-2 pb-16">
+      <div className="mx-auto max-w-page px-[120px] pt-2 pb-16">
         <div className="flex flex-col gap-10 py-10">
           {rows.map((row, rowIndex) => (
             <div
@@ -46,7 +50,12 @@ export default async function HomePage() {
               )}
             >
               {row.films.map((film) => (
-                <MovieCard key={film.id} film={film} size={row.size} />
+                <MovieCard
+                  key={film.id}
+                  film={film}
+                  size={row.size}
+                  showActors={row.showActors}
+                />
               ))}
             </div>
           ))}
