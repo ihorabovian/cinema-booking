@@ -47,7 +47,7 @@ export function MovieCard({ film, size = "small" }: MovieCardProps) {
         </p>
       </div>
 
-      <Button asChild className="h-[52px] w-full rounded-full px-6">
+      <Button asChild className="mt-auto h-[52px] w-full rounded-full px-6">
         <Link href={`/films/${film.id}`}>Details</Link>
       </Button>
     </article>
