@@ -21,5 +21,5 @@ export async function getFilms(): Promise<Film[]> {
 }
 
 export function getImageUrl(path: string) {
-  return `${process.env.API_BASE_URL}${path}`;
+  return `${process.env.API_BASE_URL}/api${path}`;
 }
