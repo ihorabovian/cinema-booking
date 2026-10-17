@@ -55,6 +55,7 @@ export default async function HomePage() {
                   film={film}
                   size={row.size}
                   showActors={row.showActors}
+                  preload={rowIndex === 0}
                 />
               ))}
             </div>

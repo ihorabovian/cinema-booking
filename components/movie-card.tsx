@@ -11,12 +11,14 @@ type MovieCardProps = {
   film: Film;
   size?: "large" | "small";
   showActors?: boolean;
+  preload?: boolean;
 };
 
 export function MovieCard({
   film,
   size = "small",
   showActors = false,
+  preload = false,
 }: MovieCardProps) {
   const isLarge = size === "large";
 
@@ -32,8 +34,13 @@ export function MovieCard({
           src={getImageUrl(film.img)}
           alt={film.name}
           fill
+          sizes={
+            isLarge
+              ? "(min-width: 1440px) 580px, 50vw"
+              : "(min-width: 1440px) 282px, 25vw"
+          }
+          preload={preload}
           className="object-cover"
-          unoptimized
         />
         <Badge className="absolute top-4 left-4 h-8 rounded-full bg-accent-primary px-4 py-2 text-xs leading-4 font-bold text-primary">
           {film.userRatings.kinopoisk}
