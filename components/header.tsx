@@ -1,5 +1,6 @@
 import icon from "@/app/icon.png";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "./ui/button";
 import { LogOut, Ticket, User } from "lucide-react";
 
@@ -8,10 +9,10 @@ export function Header() {
     <header>
       <div className="mx-auto max-w-page px-[120px] pt-[64px]">
         <div className="flex justify-between border border-primary rounded-full p-[12px] bg-background shadow-[0_0_12px_rgba(0,0,0,0.14)]">
-          <div className="flex items-center gap-1">
+          <Link href="/" className="flex items-center gap-1">
             <Image src={icon} alt="icon" width={24} height={24} />
             <span className="text-base leading-6 font-extrabold">CINEMA</span>
-          </div>
+          </Link>
           <div className="flex items-center gap-4">
             <button className="flex size-8 items-center justify-center rounded-full bg-secondary cursor-pointer hover:bg-gray-200 ">
               <Ticket size={20} />
