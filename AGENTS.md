@@ -10,47 +10,50 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 ## Project
 
-- Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4.
-- Routes live in `app/`. Components are Server Components by default; add `"use client"` only when a component needs state, effects or browser APIs.
-- Design tokens are defined in `app/globals.css` (`:root` variables exposed through `@theme`). There is no `tailwind.config` file.
+- Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, shadcn/ui.
+- Desktop design, 1440px wide: https://www.figma.com/design/AHzwzYFVJGm81EfKxFhBL4/
+- `app/` holds routes only. Own components go in `components/`, shadcn components in `components/ui/`, non-UI code in `lib/`.
 
 ## Rules
 
-### Approach
+### Styling
 
-- Read the surrounding code before changing it, and match its style: naming, structure, comment density.
-- Do what was asked and nothing more. If you notice something else worth fixing, mention it instead of changing it silently.
-- Ask when a decision affects the API, data shape or UX, or when requirements conflict (design vs. API, task vs. existing code). Decide small things yourself and mention them in the summary.
-- For an unfamiliar library or a new major version, check its docs before writing code from memory.
+- Use design tokens for colors. Add a new Figma color as `--name` in `:root` and `--color-name` in `@theme inline` in `app/globals.css`, then use `bg-name` / `text-name`. No `bg-gray-*`, `bg-black` or hex values in class names.
+- Wrap page content in `mx-auto max-w-page px-[120px]`. Don't use Tailwind's `container` class: its widths don't match the design.
+- Don't edit files in `components/ui/`. Override shadcn styles with `className`.
+- Before calling UI work done, compare it with its Figma node through the Figma MCP: sizes, spacing, colors, typography.
+
+### Data (GraphQL)
+
+- Data comes from the GraphQL API at `${API_BASE_URL}/graphql` through `gqlClient` (`lib/graphql-client.ts`). Don't use REST endpoints.
+- One query per file in `lib/queries/`, written with `graphql(...)` from `@/lib/gql`. Request only the fields the UI uses.
+- After adding or changing a query, run `npm run gen`. Never edit `lib/gql/`: it's generated.
+- Pages call the functions in `lib/cinema-api.ts`, which wrap each query with `"use cache"` and check `success`.
+- Component prop types come from query results in `lib/types/cinema.ts`. Don't write API types by hand.
+
+### Next.js
+
+- Add `"use client"` only to components with state or event handlers, and keep them small. Fetch data in the Server Component and pass it in as props.
+- Cache data with `"use cache"` and `cacheLife()` (`cacheComponents` is on). Don't use `fetch(url, { next: { revalidate } })`.
+- Use `next/image` without `unoptimized`. Images with `fill` need `sizes`; images in the first screen get `preload`.
+- Use `Link` for navigation and `button` for actions.
+- Never use the `NEXT_PUBLIC_` prefix for secrets: those variables are bundled into the browser.
+- After editing `app/globals.css` or `next.config.ts`, restart `npm run dev`. The dev server may keep serving the old styles or config.
+
+### Code
+
+- Once something repeats three or more times, extract a function, component or constant.
 - Ask before adding a new dependency.
-
-### Code quality
-
-- Keep code readable: separate logical blocks with blank lines, use clear names, avoid deep nesting.
-- Don't copy-paste. Once something repeats three or more times, extract a function, component or constant.
-- Keep a constant next to where it's used; move it to a shared file only when several places need it.
-- No magic values (colors, numbers, strings) inline when a token or constant exists for them. Add new colors as tokens in `app/globals.css`.
-- Comments explain why, not what. Mark temporary workarounds with `// TODO` and the reason.
-
-### Secrets
-
-- Never put secrets or keys in client code or in git. Local secrets go in `.env.local` (ignored by git).
-- Variables prefixed with `NEXT_PUBLIC_` are bundled into the browser. Never use that prefix for secrets.
 
 ### Verification
 
-- After changes, run `npm run typecheck` and `npm run lint`. Don't call something done until both pass.
-- For UI changes, run `npm run dev` and check the page in the browser when you can.
-- Be explicit about what was verified and what wasn't.
+- After changes, run `npm run typecheck` and `npm run lint`. Both must pass before the work is done.
 
 ### Git
 
-- Name commits and PRs following the `git-naming` skill. Keep commits small and logical, each one building on its own.
-- Never force-push or rewrite pushed history unless explicitly asked.
+- Name commits and PRs following the `git-naming` skill. One logical change per commit.
 - Ask before deleting files.
 
 ### Communication
 
-- Keep answers short and to the point, and explain things clearly and simply.
-- Don't repeat what was already said or restate the obvious.
 - Answer the user's questions in chat using the `caveman` skill.
