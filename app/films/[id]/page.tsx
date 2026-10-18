@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { ActorList } from "@/components/actor-list";
+import { MobileHeader } from "@/components/mobile-header";
 import { SeancePicker } from "@/components/seance-picker";
 import { getFilm, getFilmSchedule, getImageUrl } from "@/lib/cinema-api";
 
@@ -17,17 +18,19 @@ export default async function FilmPage({
 
   return (
     <main>
-      <div className="mx-auto max-w-page px-[120px] pt-2 pb-16">
-        <div className="grid grid-cols-[541fr_619fr] items-start gap-10 py-10">
+      <MobileHeader title="About the film" backHref="/" />
+
+      <div className="mx-auto max-w-page px-4 pb-10 md:px-[120px] md:pt-2 md:pb-16">
+        <div className="grid items-start gap-6 pt-8 md:grid-cols-[541fr_619fr] md:gap-10 md:py-10">
           <SeancePicker schedules={schedules} />
 
-          <div className="flex min-w-0 flex-col gap-6">
-            <div className="relative h-[369px] overflow-hidden rounded-[24px]">
+          <div className="order-first flex min-w-0 flex-col gap-2 md:order-none md:gap-6">
+            <div className="relative h-[235px] overflow-hidden rounded-[24px] md:h-[369px]">
               <Image
                 src={getImageUrl(film.img)}
                 alt={film.name}
                 fill
-                sizes="(min-width: 1440px) 619px, 52vw"
+                sizes="(min-width: 1440px) 619px, (min-width: 768px) 52vw, 100vw"
                 preload
                 className="object-cover"
               />
@@ -37,11 +40,11 @@ export default async function FilmPage({
             </div>
 
             <div className="flex flex-col gap-4">
-              <div className="flex flex-col gap-1">
-                <h1 className="text-[32px] leading-10 font-bold">
+              <div className="flex flex-col md:gap-1">
+                <h1 className="text-2xl leading-8 font-medium md:text-[32px] md:leading-10 md:font-bold">
                   {film.name}
                 </h1>
-                <p className="text-lg leading-6.5 text-surface first-letter:uppercase">
+                <p className="text-sm leading-[22px] font-medium text-surface first-letter:uppercase md:text-lg md:leading-6.5 md:font-normal">
                   {film.genres.join(", ")}
                 </p>
               </div>
@@ -50,7 +53,8 @@ export default async function FilmPage({
                 {film.description}
               </p>
 
-              <div className="flex flex-col gap-4">
+              {/* The mobile design has no cast block */}
+              <div className="hidden flex-col gap-4 md:flex">
                 <h2 className="text-2xl leading-8 font-bold">Actors</h2>
                 <ActorList actors={film.actors} />
               </div>

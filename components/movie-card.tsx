@@ -23,11 +23,16 @@ export function MovieCard({
   const isLarge = size === "large";
 
   return (
-    <article className="flex flex-col gap-4">
+    <article
+      className={cn(
+        "flex flex-col gap-2 md:gap-4",
+        !isLarge && "w-[235px] shrink-0 md:w-auto",
+      )}
+    >
       <div
         className={cn(
           "relative overflow-hidden rounded-[24px] p-4",
-          isLarge ? "h-[455px]" : "h-[235px]",
+          isLarge ? "h-[235px] md:h-[455px]" : "h-[235px]",
         )}
       >
         <Image
@@ -36,8 +41,8 @@ export function MovieCard({
           fill
           sizes={
             isLarge
-              ? "(min-width: 1440px) 580px, 50vw"
-              : "(min-width: 1440px) 282px, 25vw"
+              ? "(min-width: 1440px) 580px, (min-width: 768px) 50vw, 100vw"
+              : "(min-width: 1440px) 282px, (min-width: 768px) 25vw, 235px"
           }
           preload={preload}
           className="object-cover"
@@ -47,23 +52,27 @@ export function MovieCard({
         </Badge>
       </div>
 
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col md:gap-1">
         <h3
           className={cn(
-            "font-bold",
-            isLarge ? "text-[32px] leading-10" : "truncate text-2xl leading-8",
+            "text-lg leading-6.5 md:font-bold",
+            isLarge
+              ? "md:text-[32px] md:leading-10"
+              : "truncate md:text-2xl md:leading-8",
           )}
         >
           {film.name}
         </h3>
-        <p className="text-lg leading-[26px] text-surface first-letter:uppercase">
+        <p className="text-sm leading-[22px] font-medium text-surface first-letter:uppercase md:text-lg md:leading-6.5 md:font-normal">
           {film.genres.join(", ")}
         </p>
       </div>
 
       {showActors && (
-        <div className="flex flex-col gap-4">
-          <h4 className="text-2xl leading-8 font-bold">Actors</h4>
+        <div className="flex flex-col gap-2 md:gap-4">
+          <h4 className="text-base leading-6 font-medium md:text-2xl md:leading-8 md:font-bold">
+            Actors
+          </h4>
           <ActorList actors={film.actors} />
         </div>
       )}

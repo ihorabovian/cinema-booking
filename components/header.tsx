@@ -6,7 +6,7 @@ import { LogOut, Ticket, User } from "lucide-react";
 
 export function Header() {
   return (
-    <header>
+    <header className="hidden md:block">
       <div className="mx-auto max-w-page px-[120px] pt-[64px]">
         <div className="flex justify-between border border-primary rounded-full p-[12px] bg-background shadow-[0_0_12px_rgba(0,0,0,0.14)]">
           <Link href="/" className="flex items-center gap-1">

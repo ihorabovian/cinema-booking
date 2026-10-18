@@ -61,7 +61,7 @@ export function SeancePicker({ schedules }: SeancePickerProps) {
   return (
     <div className="flex min-w-0 flex-col gap-6">
       <div className="flex flex-col gap-6">
-        <div className="flex h-[50px] items-center self-start rounded-full bg-muted p-1">
+        <div className="flex h-[50px] max-w-full items-center self-start overflow-x-auto rounded-full bg-muted p-1">
           {dates.map((schedule, index) => (
             <button
               key={schedule.date}
@@ -69,7 +69,7 @@ export function SeancePicker({ schedules }: SeancePickerProps) {
               aria-pressed={index === dateIndex}
               onClick={() => selectDate(index)}
               className={cn(
-                "cursor-pointer rounded-full px-3 py-2 text-lg leading-6.5 font-bold whitespace-nowrap",
+                "shrink-0 cursor-pointer rounded-full px-3 py-2 text-lg leading-6.5 font-bold whitespace-nowrap",
                 index === dateIndex && "bg-background shadow-sm",
               )}
             >
@@ -111,11 +111,11 @@ export function SeancePicker({ schedules }: SeancePickerProps) {
         ))}
       </div>
 
-      <div className="pt-6">
+      <div className="md:pt-6">
         {/* TODO: open seat selection once that screen exists */}
         <Button
           disabled={!selected}
-          className="h-[52px] w-[328px] rounded-full px-6"
+          className="h-[52px] w-full rounded-full px-6 md:w-[328px]"
         >
           Continue
         </Button>

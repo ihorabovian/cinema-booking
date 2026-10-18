@@ -1,5 +1,7 @@
 import { getCinemaToday } from "@/lib/cinema-api";
 import { MovieCard } from "@/components/movie-card";
+import { MobileHeader } from "@/components/mobile-header";
+import { TabBar } from "@/components/tab-bar";
 import { cn } from "@/lib/utils";
 import type { FilmCard } from "@/lib/types/cinema";
 
@@ -37,16 +39,19 @@ export default async function HomePage() {
 
   return (
     <main>
-      <div className="mx-auto max-w-page px-[120px] pt-2 pb-16">
-        <div className="flex flex-col gap-10 py-10">
+      <MobileHeader title="Films" />
+
+      {/* pb-28 on phones leaves room for the fixed tab bar */}
+      <div className="mx-auto max-w-page px-4 pb-28 md:px-[120px] md:pt-2 md:pb-16">
+        <div className="flex flex-col gap-10 pt-8 md:py-10">
           {rows.map((row, rowIndex) => (
             <div
               key={rowIndex}
               className={cn(
-                "grid",
                 row.size === "large"
-                  ? "grid-cols-2 gap-10"
-                  : "grid-cols-4 gap-6",
+                  ? "grid gap-10 md:grid-cols-2"
+                  : // Small cards scroll sideways on phones, edge to edge
+                    "-mx-4 flex gap-3 overflow-x-auto px-4 md:mx-0 md:grid md:grid-cols-4 md:gap-6 md:overflow-visible md:px-0",
               )}
             >
               {row.films.map((film) => (
@@ -62,6 +67,8 @@ export default async function HomePage() {
           ))}
         </div>
       </div>
+
+      <TabBar />
     </main>
   );
 }
