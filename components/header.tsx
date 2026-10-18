@@ -10,16 +10,26 @@ export function Header() {
       <div className="mx-auto max-w-page px-[120px] pt-[64px]">
         <div className="flex justify-between border border-primary rounded-full p-[12px] bg-background shadow-[0_0_12px_rgba(0,0,0,0.14)]">
           <Link href="/" className="flex items-center gap-1">
-            <Image src={icon} alt="icon" width={24} height={24} />
+            <Image src={icon} alt="" width={24} height={24} />
             <span className="text-base leading-6 font-extrabold">CINEMA</span>
           </Link>
           <div className="flex items-center gap-4">
-            <button className="flex size-8 items-center justify-center rounded-full bg-secondary cursor-pointer hover:bg-gray-200 ">
-              <Ticket size={20} />
-            </button>
-            <button className="flex size-8 items-center justify-center rounded-full bg-secondary cursor-pointer hover:bg-gray-200">
-              <User size={20} />
-            </button>
+            <Button
+              variant="secondary"
+              size="icon"
+              aria-label="My tickets"
+              className="rounded-full"
+            >
+              <Ticket className="size-5" />
+            </Button>
+            <Button
+              variant="secondary"
+              size="icon"
+              aria-label="Profile"
+              className="rounded-full"
+            >
+              <User className="size-5" />
+            </Button>
             <Button className="ml-2 h-10 gap-2 rounded-full px-6">
               Sign out
               <LogOut size={16} />

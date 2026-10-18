@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
@@ -7,6 +8,11 @@ const nunito = Nunito({
   subsets: ["latin"],
   variable: "--font-nunito",
 });
+
+export const metadata: Metadata = {
+  title: "Cinema",
+  description: "Movie showtimes and ticket booking",
+};
 
 export default function RootLayout({
   children,
