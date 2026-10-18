@@ -7,77 +7,17 @@
       "skillPath": "skills/caveman/SKILL.md",
       "computedHash": "536908fcfcb232600a5875aa85f1fd50fd13305e9d67379bcd95f07c8c916f3f"
     },
-    "caveman-review": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/caveman-review/SKILL.md",
-      "computedHash": "536dffb76b4a5da9af6087e7a1e39421e05938a63e2b5215660734074e2b6a53"
-    },
-    "deslop": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/deslop/SKILL.md",
-      "computedHash": "72294d1b10e2e3a85127365b9237b2fbb77032f1f70fe51753058cccd2fcfbc6"
-    },
-    "diagnose": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/diagnose/SKILL.md",
-      "computedHash": "1c3c85517ac42116fe5f2bfb5150f7b3e38ad23808e40b33fbb01f1afb611983"
-    },
     "git-naming": {
       "source": "IhorAbovian/skills",
       "sourceType": "github",
       "skillPath": "skills/git-naming/SKILL.md",
       "computedHash": "0ac15417475886fd1a40d2d0180bcfbf6989761352ca953874ec3095fc4d7a1f"
     },
-    "grill-me": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/grill-me/SKILL.md",
-      "computedHash": "daf64ca15f4fa081a6747766db538e2dbd1131725ed4fcdd3d538dc62c7035ba"
-    },
-    "handoff": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/handoff/SKILL.md",
-      "computedHash": "3fdffd9dce6fc3e9f9f756ba79d694c5f162e11c7e7fbc72a0958f204312e0b1"
-    },
-    "improve-codebase-architecture": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/improve-codebase-architecture/SKILL.md",
-      "computedHash": "5d9444ffe5c240f2d20081c42c547112e1b8c372375a14e4c98df4d94bde11e1"
-    },
-    "js-conventions": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/js-conventions/SKILL.md",
-      "computedHash": "52a30dd3671c0efafda274e74e485e94b82256f32d55e74fb2f4cf25c26c2215"
-    },
-    "ponytail": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/ponytail/SKILL.md",
-      "computedHash": "f7ce468a65133676feb756b4ba9a1ebda7d69b0775c1d4eaa99f6b5ef6116c7a"
-    },
     "shadcn": {
       "source": "IhorAbovian/skills",
       "sourceType": "github",
       "skillPath": "skills/shadcn/SKILL.md",
       "computedHash": "0dc0edeeaec2ae491ae506806517866a3f9bd48d04e0458feb37e0252862891f"
-    },
-    "skim-review": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/skim-review/SKILL.md",
-      "computedHash": "767a8d5f740a9cfc7cf3457de183baad8068097ca97ab50069a58e3e6911afd8"
-    },
-    "tdd": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/tdd/SKILL.md",
-      "computedHash": "78b31b2120c5fe7aced1cebfd4c7c94acb0037fd4f89c83c67584414aa4173bd"
     },
     "vercel-composition-patterns": {
       "source": "IhorAbovian/skills",
@@ -90,12 +30,6 @@
       "sourceType": "github",
       "skillPath": "skills/vercel-react-best-practices/SKILL.md",
       "computedHash": "6b526d013e28073246a36f99b529bc43745d30832ecfa8217b359c34f260ca6b"
-    },
-    "zoom-out": {
-      "source": "IhorAbovian/skills",
-      "sourceType": "github",
-      "skillPath": "skills/zoom-out/SKILL.md",
-      "computedHash": "a8b8ed45609fdfa9f184d0c9f69326e43822a42eebea14db2792d777373de562"
     }
   }
 }
