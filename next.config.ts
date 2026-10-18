@@ -7,7 +7,7 @@ const nextConfig: NextConfig = {
   partialPrefetching: true,
   images: {
     // Posters and actor photos are served by the cinema API.
-    remotePatterns: apiBaseUrl ? [new URL(`${apiBaseUrl}/api/static/**`)] : [],
+    remotePatterns: apiBaseUrl ? [new URL(`${apiBaseUrl}/static/**`)] : [],
     // The local API runs on 127.0.0.1, which Next.js blocks by default to prevent SSRF.
     dangerouslyAllowLocalIP: process.env.NODE_ENV === "development",
   },

@@ -1,12 +1,12 @@
 import Image from "next/image";
 import { getImageUrl } from "@/lib/cinema-api";
-import type { Person } from "@/lib/types/cinema";
+import type { Actor } from "@/lib/types/cinema";
 
 // The design fits four actors in a row.
 const MAX_ACTORS = 4;
 
 type ActorListProps = {
-  actors: Person[];
+  actors: Actor[];
 };
 
 export function ActorList({ actors }: ActorListProps) {

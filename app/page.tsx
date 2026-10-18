@@ -1,20 +1,20 @@
-import { getFilms } from "@/lib/cinema-api";
+import { getCinemaToday } from "@/lib/cinema-api";
 import { MovieCard } from "@/components/movie-card";
 import { cn } from "@/lib/utils";
-import type { Film } from "@/lib/types/cinema";
+import type { FilmCard } from "@/lib/types/cinema";
 
 const LARGE_ROW_SIZE = 2;
 const SMALL_ROW_SIZE = 4;
 
 type FilmRow = {
   size: "large" | "small";
-  films: Film[];
+  films: FilmCard[];
   showActors: boolean;
 };
 
 // The design alternates a row of 2 large cards with a row of 4 small ones,
 // and every second large row also shows the cast.
-function splitIntoRows(films: Film[]) {
+function splitIntoRows(films: FilmCard[]) {
   const rows: FilmRow[] = [];
   let index = 0;
 
@@ -32,7 +32,7 @@ function splitIntoRows(films: Film[]) {
 }
 
 export default async function HomePage() {
-  const films = await getFilms();
+  const films = await getCinemaToday();
   const rows = splitIntoRows(films);
 
   return (

@@ -1,55 +1,54 @@
 import { cacheLife } from "next/cache";
-import type {
-  Film,
-  FilmResponse,
-  FilmSchedule,
-  FilmsResponse,
-  ScheduleResponse,
-} from "@/lib/types/cinema";
+import { gqlClient } from "./graphql-client";
+import { GET_CINEMA_TODAY } from "./queries/GET_CINEMA_TODAY";
+import { GET_FILM } from "./queries/GET_FILM";
+import { GET_FILM_SCHEDULE } from "./queries/GET_FILM_SCHEDULE";
+import type { FilmCard, FilmDetails, FilmSchedule } from "@/lib/types/cinema";
 
-// Every endpoint answers with `success`, so the status checks live in one place.
-async function fetchFromApi<T extends { success: boolean }>(
-  path: string,
-): Promise<T> {
-  const response = await fetch(`${process.env.API_BASE_URL}/api/cinema${path}`);
+type ApiResponse = {
+  success: boolean;
+  reason: string | null;
+};
 
-  if (!response.ok) {
-    throw new Error(`Failed to fetch ${path}: ${response.status}`);
+// Every query answers with `success` and `reason`, so a failed one becomes an error here.
+function assertSuccess(response: ApiResponse, query: string) {
+  if (!response.success) {
+    throw new Error(`${query} failed: ${response.reason ?? "unknown reason"}`);
   }
-
-  const data: T = await response.json();
-
-  if (!data.success) {
-    throw new Error(`Response for ${path} was not successful`);
-  }
-
-  return data;
 }
 
-export async function getFilms(): Promise<Film[]> {
+export async function getCinemaToday(): Promise<FilmCard[]> {
   "use cache";
   cacheLife("minutes");
 
-  const data = await fetchFromApi<FilmsResponse>("/films");
-  return data.films;
+  const { getCinemaToday } = await gqlClient.request(GET_CINEMA_TODAY);
+  assertSuccess(getCinemaToday, "getCinemaToday");
+
+  return getCinemaToday.films;
 }
 
-export async function getFilm(id: string): Promise<Film> {
+export async function getFilm(filmId: string): Promise<FilmDetails> {
   "use cache";
   cacheLife("minutes");
 
-  const data = await fetchFromApi<FilmResponse>(`/film/${id}`);
-  return data.film;
+  const { getFilm } = await gqlClient.request(GET_FILM, { filmId });
+  assertSuccess(getFilm, "getFilm");
+
+  return getFilm.film;
 }
 
-export async function getFilmSchedule(id: string): Promise<FilmSchedule[]> {
+export async function getFilmSchedule(filmId: string): Promise<FilmSchedule[]> {
   "use cache";
   cacheLife("minutes");
 
-  const data = await fetchFromApi<ScheduleResponse>(`/film/${id}/schedule`);
-  return data.schedules;
+  const { getFilmSchedule } = await gqlClient.request(GET_FILM_SCHEDULE, {
+    filmId,
+  });
+  assertSuccess(getFilmSchedule, "getFilmSchedule");
+
+  return getFilmSchedule.schedules;
 }
 
 export function getImageUrl(path: string) {
-  return `${process.env.API_BASE_URL}/api${path}`;
+  return `${process.env.API_BASE_URL}${path}`;
 }

@@ -3,12 +3,12 @@ import Link from "next/link";
 import { Button } from "./ui/button";
 import { getImageUrl } from "@/lib/cinema-api";
 import { cn } from "@/lib/utils";
-import type { Film } from "@/lib/types/cinema";
+import type { FilmCard } from "@/lib/types/cinema";
 import { Badge } from "@/components/ui/badge";
 import { ActorList } from "@/components/actor-list";
 
 type MovieCardProps = {
-  film: Film;
+  film: FilmCard;
   size?: "large" | "small";
   showActors?: boolean;
   preload?: boolean;
