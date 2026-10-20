@@ -1,5 +1,6 @@
 import type {
   GetCinemaTodayQuery,
+  GetFilmHallsQuery,
   GetFilmQuery,
   GetFilmScheduleQuery,
 } from "@/lib/gql/graphql";
@@ -12,3 +13,7 @@ export type Actor = FilmCard["actors"][number];
 export type FilmSchedule =
   GetFilmScheduleQuery["getFilmSchedule"]["schedules"][number];
 export type Seance = FilmSchedule["seances"][number];
+
+export type Hall =
+  GetFilmHallsQuery["getFilmSchedule"]["schedules"][number]["seances"][number]["hall"];
+export type HallPlace = Hall["places"][number][number];
