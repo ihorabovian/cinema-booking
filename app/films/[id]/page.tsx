@@ -22,7 +22,7 @@ export default async function FilmPage({
 
       <div className="mx-auto max-w-page px-4 pb-10 md:px-[120px] md:pt-2 md:pb-16">
         <div className="grid items-start gap-6 pt-8 md:grid-cols-[541fr_619fr] md:gap-10 md:py-10">
-          <SeancePicker schedules={schedules} />
+          <SeancePicker filmId={id} schedules={schedules} />
 
           <div className="order-first flex min-w-0 flex-col gap-2 md:order-none md:gap-6">
             <div className="relative h-[235px] overflow-hidden rounded-[24px] md:h-[369px]">

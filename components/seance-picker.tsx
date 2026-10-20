@@ -1,15 +1,20 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
+import { LOCALE, parseScheduleDate } from "@/lib/booking";
 import { cn } from "@/lib/utils";
 import type { FilmSchedule, Seance } from "@/lib/types/cinema";
 
 // The design shows four dates in one row; the API sends a whole week.
 const MAX_DATES = 4;
 
+const continueClassName = "h-[52px] w-full rounded-full px-6 md:w-[328px]";
+
 type SeancePickerProps = {
+  filmId: string;
   schedules: FilmSchedule[];
 };
 
@@ -18,15 +23,13 @@ type SelectedSeance = {
   time: string;
 };
 
-// The API sends dates as "dd.mm.yy".
+// "Tue, Oct 20"
 function formatDate(date: string) {
-  const [day, month, year] = date.split(".").map(Number);
-  const parsed = new Date(2000 + year, month - 1, day);
-
-  const weekday = parsed.toLocaleDateString("en-US", { weekday: "short" });
-  const monthName = parsed.toLocaleDateString("en-US", { month: "short" });
-
-  return `${weekday}, ${day} ${monthName}`;
+  return parseScheduleDate(date).toLocaleDateString(LOCALE, {
+    weekday: "short",
+    month: "short",
+    day: "numeric",
+  });
 }
 
 function groupByHall(seances: Seance[]) {
@@ -41,7 +44,7 @@ function groupByHall(seances: Seance[]) {
   return [...halls];
 }
 
-export function SeancePicker({ schedules }: SeancePickerProps) {
+export function SeancePicker({ filmId, schedules }: SeancePickerProps) {
   const [dateIndex, setDateIndex] = useState(0);
   const [selected, setSelected] = useState<SelectedSeance | null>(null);
 
@@ -112,13 +115,26 @@ export function SeancePicker({ schedules }: SeancePickerProps) {
       </div>
 
       <div className="md:pt-6">
-        {/* TODO: open seat selection once that screen exists */}
-        <Button
-          disabled={!selected}
-          className="h-[52px] w-full rounded-full px-6 md:w-[328px]"
-        >
-          Continue
-        </Button>
+        {selected ? (
+          <Button asChild className={continueClassName}>
+            <Link
+              href={{
+                pathname: `/films/${filmId}/booking`,
+                query: {
+                  date: dates[dateIndex].date,
+                  time: selected.time,
+                  hall: selected.hall,
+                },
+              }}
+            >
+              Continue
+            </Link>
+          </Button>
+        ) : (
+          <Button disabled className={continueClassName}>
+            Continue
+          </Button>
+        )}
       </div>
     </div>
   );
