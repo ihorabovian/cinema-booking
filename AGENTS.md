@@ -53,6 +53,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 - Name commits and PRs following the `git-naming` skill. One logical change per commit.
 - Ask before deleting files.
+- Never commit, push, merge, branch, or run any other GitHub operation yourself. The user runs all such commands. Suggest the exact commands in chat and wait for the user to run them.
 
 ### Communication
 
