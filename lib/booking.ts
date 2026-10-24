@@ -1,7 +1,8 @@
+import type { SeatRef } from "./booking-search-params";
+import type { Hall } from "./types/cinema";
+
 // Rows and seats are numbered from 1, the way the hall shows them.
-export type SelectedSeat = {
-  row: number;
-  seat: number;
+export type SelectedSeat = SeatRef & {
   price: number;
 };
 
@@ -80,4 +81,19 @@ export function getTotalPrice(seats: SelectedSeat[]) {
 // Keeps seats ordered by row, then seat, however the user clicked them.
 export function sortSeats(seats: SelectedSeat[]) {
   return seats.toSorted((a, b) => a.row - b.row || a.seat - b.seat);
+}
+
+// Turns the seats from the URL into bookable seats with prices. Seats that don't exist,
+// are gaps or were sold since the link was made are dropped.
+export function resolveSeats(places: Hall["places"], refs: SeatRef[]) {
+  const seats = new Map<string, SelectedSeat>();
+
+  for (const { row, seat } of refs) {
+    const place = places[row - 1]?.[seat - 1];
+    if (place && place.type !== "BLOCKED" && place.type !== "PAID") {
+      seats.set(`${row}-${seat}`, { row, seat, price: place.price });
+    }
+  }
+
+  return sortSeats([...seats.values()]);
 }

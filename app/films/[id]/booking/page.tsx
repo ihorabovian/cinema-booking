@@ -1,5 +1,7 @@
 import { notFound } from "next/navigation";
+import type { SearchParams } from "nuqs/server";
 import { BookingFlow } from "@/components/booking/booking-flow";
+import { loadBookingSearchParams } from "@/lib/booking-search-params";
 import { getFilm, getSeanceHall } from "@/lib/cinema-api";
 
 export default async function BookingPage({
@@ -7,16 +9,12 @@ export default async function BookingPage({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
+  searchParams: Promise<SearchParams>;
 }) {
   const { id } = await params;
-  const { date, time, hall } = await searchParams;
+  const { date, time, hall } = await loadBookingSearchParams(searchParams);
 
-  if (
-    typeof date !== "string" ||
-    typeof time !== "string" ||
-    typeof hall !== "string"
-  ) {
+  if (!date || !time || !hall) {
     notFound();
   }
 

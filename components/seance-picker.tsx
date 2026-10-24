@@ -5,6 +5,7 @@ import Link from "next/link";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
 import { LOCALE, parseScheduleDate } from "@/lib/booking";
+import { getBookingHref } from "@/lib/booking-search-params";
 import { cn } from "@/lib/utils";
 import type { FilmSchedule, Seance } from "@/lib/types/cinema";
 
@@ -118,14 +119,11 @@ export function SeancePicker({ filmId, schedules }: SeancePickerProps) {
         {selected ? (
           <Button asChild className={continueClassName}>
             <Link
-              href={{
-                pathname: `/films/${filmId}/booking`,
-                query: {
-                  date: dates[dateIndex].date,
-                  time: selected.time,
-                  hall: selected.hall,
-                },
-              }}
+              href={getBookingHref(filmId, {
+                date: dates[dateIndex].date,
+                time: selected.time,
+                hall: selected.hall,
+              })}
             >
               Continue
             </Link>
