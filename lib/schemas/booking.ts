@@ -40,8 +40,8 @@ export const personSchema = z.object({
   phone: z
     .string()
     .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Enter a 10-digit phone number"),
-  city: z.string().trim(),
-  email: z.email("Enter a valid email").or(z.literal("")),
+  city: requiredText("Enter your city"),
+  email: z.string().trim().min(1, "Enter your email").pipe(z.email("Enter a valid email")),
 });
 
 export const cardSchema = z.object({
