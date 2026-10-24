@@ -1,6 +1,4 @@
-import Image from "next/image";
 import Link from "next/link";
-import successIcon from "@/public/success.svg";
 import { Button } from "@/components/ui/button";
 import { DetailRow } from "./detail-row";
 import {
@@ -21,7 +19,13 @@ export function PaymentSuccess({ seance, seats }: PaymentSuccessProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4">
-        <Image src={successIcon} alt="" />
+        <svg width="56" height="56" viewBox="0 0 56 56" aria-hidden>
+          <circle cx="28" cy="28" r="28" className="fill-pink-medium" />
+          <path
+            d="M40.1381 19.3899C39.4904 18.8734 38.5466 18.9798 38.0301 19.6276L24.9464 36.0364C24.7604 36.2697 24.4128 36.2892 24.2019 36.0783L17.8649 29.7413C17.2791 29.1555 16.3294 29.1555 15.7436 29.7413C15.1578 30.3271 15.1578 31.2768 15.7436 31.8626L22.0806 38.1996C23.5572 39.6762 25.9901 39.5395 27.292 37.9067L40.3757 21.4979C40.8922 20.8501 40.7858 19.9064 40.1381 19.3899Z"
+            className="fill-primary-foreground"
+          />
+        </svg>
         <h1 className="text-2xl leading-8 font-bold">Payment successful</h1>
       </div>
 

@@ -1,7 +1,5 @@
 import { Fragment } from "react";
-import Image from "next/image";
 import { X } from "lucide-react";
-import tooltipArrow from "@/public/tooltip-arrow.svg";
 import { formatPrice, formatSeat, type SelectedSeat } from "@/lib/booking";
 import { cn } from "@/lib/utils";
 import type { Hall, HallPlace } from "@/lib/types/cinema";
@@ -164,14 +162,18 @@ function SeatTooltip({ seat, placement, onRemove }: SeatTooltipProps) {
         </button>
       </div>
       <span className="text-muted-foreground">{formatSeat(seat)}</span>
-      <Image
-        src={tooltipArrow}
-        alt=""
+      <svg
+        width="11.5"
+        height="4.67"
+        viewBox="0 0 11.5 4.67436"
+        aria-hidden
         className={cn(
-          "absolute left-1/2 -translate-x-1/2",
+          "absolute left-1/2 -translate-x-1/2 fill-primary",
           isTop ? "top-full" : "bottom-full rotate-180",
         )}
-      />
+      >
+        <path d="M5.38117 4.44532L0 0H11.5L6.69426 4.41106C6.32647 4.74865 5.76606 4.76326 5.38117 4.44532Z" />
+      </svg>
     </div>
   );
 }
