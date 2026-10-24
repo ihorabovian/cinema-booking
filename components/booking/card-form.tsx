@@ -36,7 +36,7 @@ const groups: FieldConfig<keyof CardDetails>[][] = [
   ],
 ];
 
-export function CardForm(props: StepFormHandlers<typeof cardSchema>) {
+export function CardForm(props: StepFormHandlers<CardDetails>) {
   return (
     <StepForm
       schema={cardSchema}

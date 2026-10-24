@@ -30,7 +30,7 @@ const groups: FieldConfig<keyof PersonDetails>[][] = [
   ],
 ];
 
-export function PersonForm(props: StepFormHandlers<typeof personSchema>) {
+export function PersonForm(props: StepFormHandlers<PersonDetails>) {
   return (
     <StepForm
       schema={personSchema}
