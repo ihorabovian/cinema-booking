@@ -13,6 +13,7 @@ import { TicketSummary } from "./ticket-summary";
 import { TicketsCard } from "./tickets-card";
 import { createPayment } from "@/lib/actions/create-payment";
 import {
+  PERSON_STORAGE_KEY,
   resolveSeats,
   sortSeats,
   type BookingSeance,
@@ -44,7 +45,7 @@ type BookingFlowProps = {
 
 export function BookingFlow({ seance, places }: BookingFlowProps) {
   const [query, setQuery] = useQueryStates(queryParsers);
-  const [person, setPerson] = useSessionStorage("booking:person", personSchema);
+  const [person, setPerson] = useSessionStorage(PERSON_STORAGE_KEY, personSchema);
   // The paid order, shown on the success screen after the URL is cleared.
   const [paid, setPaid] = useState<{
     order: CinemaOrder;
@@ -92,8 +93,10 @@ export function BookingFlow({ seance, places }: BookingFlowProps) {
     }
 
     setPaid({ order: result.order, seance, seats });
-    // A reload after paying starts a new booking instead of reopening the card step.
+    // A reload after paying starts a new booking instead of reopening the card step,
+    // and the next booking asks for the details again.
     setQuery({ step: null, seats: null });
+    setPerson(undefined);
   }
 
   // The success screen belongs to the URL it was shown at. The browser Back button or

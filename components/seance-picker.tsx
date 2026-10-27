@@ -4,8 +4,9 @@ import { useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { Button } from "./ui/button";
-import { LOCALE, parseScheduleDate } from "@/lib/booking";
+import { LOCALE, PERSON_STORAGE_KEY, parseScheduleDate } from "@/lib/booking";
 import { getBookingHref } from "@/lib/booking-search-params";
+import { removeSessionItem } from "@/lib/use-session-storage";
 import { cn } from "@/lib/utils";
 import type { FilmSchedule, Seance } from "@/lib/types/cinema";
 
@@ -124,6 +125,8 @@ export function SeancePicker({ filmId, schedules }: SeancePickerProps) {
                 time: selected.time,
                 hall: selected.hall,
               })}
+              // A new booking asks for the details again.
+              onClick={() => removeSessionItem(PERSON_STORAGE_KEY)}
             >
               Continue
             </Link>

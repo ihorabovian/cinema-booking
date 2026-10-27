@@ -15,6 +15,10 @@ export type BookingSeance = {
   hall: string;
 };
 
+// The customer's details live in sessionStorage under this key for the length of one
+// booking: they survive a reload and are dropped when a new booking starts.
+export const PERSON_STORAGE_KEY = "booking:person";
+
 // The site is for Canada: Canadian English formats and prices in Canadian dollars.
 export const LOCALE = "en-CA";
 

@@ -18,6 +18,15 @@ function readItem(key: string) {
   }
 }
 
+export function removeSessionItem(key: string) {
+  try {
+    sessionStorage.removeItem(key);
+  } catch {
+    // Unavailable storage holds nothing to remove.
+  }
+  window.dispatchEvent(new Event(CHANGE_EVENT));
+}
+
 // A value kept in sessionStorage and checked against a schema when read back.
 // The server has no storage, so the first render is always empty and the value
 // appears right after hydration.
@@ -38,8 +47,13 @@ export function useSessionStorage<T>(key: string, schema: z.ZodType<T>) {
     }
   }, [raw, schema]);
 
+  // undefined removes the value.
   const setValue = useCallback(
-    (next: T) => {
+    (next: T | undefined) => {
+      if (next === undefined) {
+        removeSessionItem(key);
+        return;
+      }
       try {
         sessionStorage.setItem(key, JSON.stringify(next));
       } catch {
