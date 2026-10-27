@@ -1,5 +1,6 @@
-import { cacheLife } from "next/cache";
+import { cacheLife, cacheTag } from "next/cache";
 import { gqlClient } from "./graphql-client";
+import { CREATE_CINEMA_PAYMENT } from "./queries/CREATE_CINEMA_PAYMENT";
 import { GET_CINEMA_TODAY } from "./queries/GET_CINEMA_TODAY";
 import { GET_FILM } from "./queries/GET_FILM";
 import { GET_FILM_HALLS } from "./queries/GET_FILM_HALLS";
@@ -9,6 +10,8 @@ import type {
   FilmDetails,
   FilmSchedule,
   Hall,
+  PaymentInput,
+  CinemaOrder,
 } from "@/lib/types/cinema";
 
 type ApiResponse = {
@@ -21,6 +24,24 @@ function assertSuccess(response: ApiResponse, query: string) {
   if (!response.success) {
     throw new Error(`${query} failed: ${response.reason ?? "unknown reason"}`);
   }
+}
+
+// The hall cache of a film is tagged, so a payment can drop the seats it just sold.
+export function getFilmHallsTag(filmId: string) {
+  return `film-halls:${filmId}`;
+}
+
+// A mutation: never cached.
+export async function createCinemaPayment(
+  input: PaymentInput,
+): Promise<CinemaOrder> {
+  const { createCinemaPayment } = await gqlClient.request(
+    CREATE_CINEMA_PAYMENT,
+    { input },
+  );
+  assertSuccess(createCinemaPayment, "createCinemaPayment");
+
+  return createCinemaPayment.order;
 }
 
 export async function getCinemaToday(): Promise<FilmCard[]> {
@@ -65,6 +86,7 @@ export async function getSeanceHall(
 ): Promise<Hall | null> {
   "use cache";
   cacheLife("seconds");
+  cacheTag(getFilmHallsTag(filmId));
 
   const { getFilmSchedule } = await gqlClient.request(GET_FILM_HALLS, {
     filmId,

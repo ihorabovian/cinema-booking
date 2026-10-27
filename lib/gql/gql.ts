@@ -14,12 +14,14 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "\n  mutation CreateCinemaPayment($input: CreateCinemaPaymentDto!) {\n    createCinemaPayment(input: $input) {\n      success\n      reason\n      order {\n        orderNumber\n      }\n    }\n  }\n": typeof types.CreateCinemaPaymentDocument,
     "\n  query GetCinemaToday {\n    getCinemaToday {\n      success\n      reason\n      films {\n        id\n        name\n        genres\n        img\n        userRatings {\n          imdb\n        }\n        actors {\n          id\n          fullName\n          photo\n        }\n      }\n    }\n  }\n": typeof types.GetCinemaTodayDocument,
     "\n  query GetFilm($filmId: String!) {\n    getFilm(filmId: $filmId) {\n      success\n      reason\n      film {\n        id\n        name\n        description\n        genres\n        img\n        userRatings {\n          imdb\n        }\n        actors {\n          id\n          fullName\n          photo\n        }\n      }\n    }\n  }\n": typeof types.GetFilmDocument,
     "\n  query GetFilmHalls($filmId: String!) {\n    getFilmSchedule(filmId: $filmId) {\n      success\n      reason\n      schedules {\n        date\n        seances {\n          time\n          hall {\n            name\n            places {\n              price\n              type\n            }\n          }\n        }\n      }\n    }\n  }\n": typeof types.GetFilmHallsDocument,
     "\n  query GetFilmSchedule($filmId: String!) {\n    getFilmSchedule(filmId: $filmId) {\n      success\n      reason\n      schedules {\n        date\n        seances {\n          time\n          hall {\n            name\n          }\n        }\n      }\n    }\n  }\n": typeof types.GetFilmScheduleDocument,
 };
 const documents: Documents = {
+    "\n  mutation CreateCinemaPayment($input: CreateCinemaPaymentDto!) {\n    createCinemaPayment(input: $input) {\n      success\n      reason\n      order {\n        orderNumber\n      }\n    }\n  }\n": types.CreateCinemaPaymentDocument,
     "\n  query GetCinemaToday {\n    getCinemaToday {\n      success\n      reason\n      films {\n        id\n        name\n        genres\n        img\n        userRatings {\n          imdb\n        }\n        actors {\n          id\n          fullName\n          photo\n        }\n      }\n    }\n  }\n": types.GetCinemaTodayDocument,
     "\n  query GetFilm($filmId: String!) {\n    getFilm(filmId: $filmId) {\n      success\n      reason\n      film {\n        id\n        name\n        description\n        genres\n        img\n        userRatings {\n          imdb\n        }\n        actors {\n          id\n          fullName\n          photo\n        }\n      }\n    }\n  }\n": types.GetFilmDocument,
     "\n  query GetFilmHalls($filmId: String!) {\n    getFilmSchedule(filmId: $filmId) {\n      success\n      reason\n      schedules {\n        date\n        seances {\n          time\n          hall {\n            name\n            places {\n              price\n              type\n            }\n          }\n        }\n      }\n    }\n  }\n": types.GetFilmHallsDocument,
@@ -40,6 +42,10 @@ const documents: Documents = {
  */
 export function graphql(source: string): unknown;
 
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  mutation CreateCinemaPayment($input: CreateCinemaPaymentDto!) {\n    createCinemaPayment(input: $input) {\n      success\n      reason\n      order {\n        orderNumber\n      }\n    }\n  }\n"): (typeof documents)["\n  mutation CreateCinemaPayment($input: CreateCinemaPaymentDto!) {\n    createCinemaPayment(input: $input) {\n      success\n      reason\n      order {\n        orderNumber\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
