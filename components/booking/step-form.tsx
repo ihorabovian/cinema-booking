@@ -32,7 +32,10 @@ type FormSchema<Values extends FieldValues> = z.ZodType<Values, Values> & {
 export type StepFormHandlers<Values extends FieldValues> = {
   defaultValues?: Partial<Values>;
   onBack: () => void;
-  onSubmit: (values: Values) => void;
+  // While a returned promise is pending, the submit button stays disabled.
+  onSubmit: (values: Values) => void | Promise<void>;
+  // A form-wide error, such as a declined payment.
+  error?: string;
 };
 
 type StepFormProps<Values extends FieldValues> = StepFormHandlers<Values> & {
@@ -51,6 +54,7 @@ export function StepForm<Values extends FieldValues>({
   defaultValues,
   onBack,
   onSubmit,
+  error,
 }: StepFormProps<Values>) {
   const form = useForm<Values>({
     resolver: zodResolver(schema),
@@ -83,7 +87,16 @@ export function StepForm<Values extends FieldValues>({
         ))}
       </div>
 
-      <StepActions back={{ onClick: onBack }} submitLabel={submitLabel} />
+      {error && (
+        <p role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+      <StepActions
+        back={{ onClick: onBack }}
+        submitLabel={submitLabel}
+        submitDisabled={form.formState.isSubmitting}
+      />
     </form>
   );
 }

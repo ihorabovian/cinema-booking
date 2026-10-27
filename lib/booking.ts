@@ -1,5 +1,6 @@
 import type { SeatRef } from "./booking-search-params";
-import type { Hall } from "./types/cinema";
+import type { CardDetails, PersonDetails } from "./schemas/booking";
+import type { Hall, PaymentInput } from "./types/cinema";
 
 // Rows and seats are numbered from 1, the way the hall shows them.
 export type SelectedSeat = SeatRef & {
@@ -96,4 +97,26 @@ export function resolveSeats(places: Hall["places"], refs: SeatRef[]) {
   }
 
   return sortSeats([...seats.values()]);
+}
+
+// Maps the booking to the createCinemaPayment input. The API numbers seats as columns
+// and expects the phone in E.164: "+14165550123".
+export function toPaymentInput(
+  seance: BookingSeance,
+  seats: SelectedSeat[],
+  person: PersonDetails,
+  card: CardDetails,
+): PaymentInput {
+  return {
+    filmId: seance.filmId,
+    tickets: seats.map((s) => ({ row: s.row, column: s.seat })),
+    person: {
+      firstname: person.firstName,
+      lastname: person.lastName,
+      middlename: person.middleName,
+      phone: `+1${person.phone.replace(/\D/g, "")}`,
+    },
+    debitCard: card,
+    seance: { date: seance.date, time: seance.time },
+  };
 }

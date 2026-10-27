@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { useQueryStates } from "nuqs";
 import { BookingBreadcrumb } from "./booking-breadcrumb";
 import { CardForm } from "./card-form";
@@ -11,6 +11,7 @@ import { StepActions } from "./step-actions";
 import { StepProgress } from "./step-progress";
 import { TicketSummary } from "./ticket-summary";
 import { TicketsCard } from "./tickets-card";
+import { createPayment } from "@/lib/actions/create-payment";
 import {
   resolveSeats,
   sortSeats,
@@ -18,8 +19,8 @@ import {
   type SelectedSeat,
 } from "@/lib/booking";
 import { bookingSearchParams } from "@/lib/booking-search-params";
-import { personSchema } from "@/lib/schemas/booking";
-import type { Hall } from "@/lib/types/cinema";
+import { personSchema, type CardDetails } from "@/lib/schemas/booking";
+import type { CinemaOrder, Hall } from "@/lib/types/cinema";
 import { useSessionStorage } from "@/lib/use-session-storage";
 
 const STEP_TITLES = [
@@ -44,8 +45,22 @@ type BookingFlowProps = {
 export function BookingFlow({ seance, places }: BookingFlowProps) {
   const [query, setQuery] = useQueryStates(queryParsers);
   const [person, setPerson] = useSessionStorage("booking:person", personSchema);
-  // Seats of the paid order, shown on the success screen after the URL is cleared.
-  const [paidSeats, setPaidSeats] = useState<SelectedSeat[]>();
+  // The paid order, shown on the success screen after the URL is cleared.
+  const [paid, setPaid] = useState<{
+    order: CinemaOrder;
+    seance: BookingSeance;
+    seats: SelectedSeat[];
+  }>();
+  const [paymentError, setPaymentError] = useState<string>();
+
+  // Next hides a page with <Activity> instead of unmounting it, so its state outlives the
+  // visit. Coming back to book again must start a new booking, not reopen the last result.
+  useLayoutEffect(() => {
+    return () => {
+      setPaid(undefined);
+      setPaymentError(undefined);
+    };
+  }, []);
 
   const seats = resolveSeats(places, query.seats);
   // A step opens only once the ones before it are filled in, whatever the URL says.
@@ -67,15 +82,38 @@ export function BookingFlow({ seance, places }: BookingFlowProps) {
     setQuery({ seats: nextSeats });
   }
 
-  function completePayment() {
-    // TODO: send createCinemaPayment with the seats, person and card here.
-    setPaidSeats(seats);
+  async function completePayment(card: CardDetails) {
+    setPaymentError(undefined);
+    const result = await createPayment(seance, seats, person, card);
+
+    if (!result.ok) {
+      setPaymentError(result.error);
+      return;
+    }
+
+    setPaid({ order: result.order, seance, seats });
     // A reload after paying starts a new booking instead of reopening the card step.
     setQuery({ step: null, seats: null });
   }
 
-  if (paidSeats) {
-    return <PaymentSuccess seance={seance} seats={paidSeats} />;
+  // The success screen belongs to the URL it was shown at. The browser Back button or
+  // another seance changes only the search params and keeps this component, so they
+  // must lead back to booking, not to the last result.
+  const isPaidHere =
+    paid &&
+    query.seats.length === 0 &&
+    paid.seance.date === seance.date &&
+    paid.seance.time === seance.time &&
+    paid.seance.hall === seance.hall;
+
+  if (isPaidHere) {
+    return (
+      <PaymentSuccess
+        seance={paid.seance}
+        seats={paid.seats}
+        orderNumber={paid.order.orderNumber}
+      />
+    );
   }
 
   return (
@@ -121,7 +159,13 @@ export function BookingFlow({ seance, places }: BookingFlowProps) {
           />
         )}
 
-        {step === 4 && <CardForm onBack={() => goTo(3)} onSubmit={completePayment} />}
+        {step === 4 && (
+          <CardForm
+            error={paymentError}
+            onBack={() => goTo(3)}
+            onSubmit={completePayment}
+          />
+        )}
       </div>
 
       {step === 1 && <TicketsCard seance={seance} seats={seats} />}

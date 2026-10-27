@@ -13,9 +13,10 @@ const buttonClassName = "h-13 w-full rounded-full px-6";
 type PaymentSuccessProps = {
   seance: BookingSeance;
   seats: SelectedSeat[];
+  orderNumber: number;
 };
 
-export function PaymentSuccess({ seance, seats }: PaymentSuccessProps) {
+export function PaymentSuccess({ seance, seats, orderNumber }: PaymentSuccessProps) {
   return (
     <div className="flex flex-col gap-6">
       <div className="flex flex-col gap-4">
@@ -39,7 +40,7 @@ export function PaymentSuccess({ seance, seats }: PaymentSuccessProps) {
         />
         <DetailRow size="sm" label="Hall" value={seance.hall} />
         <DetailRow size="sm" label="Seats" value={formatSeatsByRow(seats)} />
-        {/* TODO: add the "Ticket numbers" row from the createCinemaPayment response */}
+        <DetailRow size="sm" label="Order number" value={orderNumber} />
         <hr className="h-px rounded-full border-0 bg-secondary" />
         <p className="text-base leading-6 font-medium text-surface">
           All the details have been sent to you by SMS
