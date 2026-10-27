@@ -48,7 +48,7 @@ export function MovieCard({
           className="object-cover"
         />
         <Badge className="absolute top-4 left-4 h-8 rounded-full bg-accent-primary px-4 py-2 text-xs leading-4 font-bold text-primary">
-          {film.userRatings.kinopoisk}
+          {film.userRatings.imdb}
         </Badge>
       </div>
 

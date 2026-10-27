@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Header } from "@/components/header";
@@ -22,8 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={cn("font-sans", nunito.variable)}>
       <body>
-        <Header />
-        {children}
+        {/* Lets client components keep state in the URL with nuqs */}
+        <NuqsAdapter>
+          <Header />
+          {children}
+        </NuqsAdapter>
       </body>
     </html>
   );

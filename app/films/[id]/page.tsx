@@ -22,7 +22,7 @@ export default async function FilmPage({
 
       <div className="mx-auto max-w-page px-4 pb-10 md:px-[120px] md:pt-2 md:pb-16">
         <div className="grid items-start gap-6 pt-8 md:grid-cols-[541fr_619fr] md:gap-10 md:py-10">
-          <SeancePicker schedules={schedules} />
+          <SeancePicker filmId={id} schedules={schedules} />
 
           <div className="order-first flex min-w-0 flex-col gap-2 md:order-none md:gap-6">
             <div className="relative h-[235px] overflow-hidden rounded-[24px] md:h-[369px]">
@@ -35,7 +35,7 @@ export default async function FilmPage({
                 className="object-cover"
               />
               <Badge className="absolute top-4 left-4 h-8 rounded-full bg-accent-primary px-4 py-2 text-xs leading-4 font-bold text-primary">
-                {film.userRatings.kinopoisk}
+                {film.userRatings.imdb}
               </Badge>
             </div>
 

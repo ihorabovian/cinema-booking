@@ -1,4 +1,4 @@
-import icon from "@/app/icon.png";
+import icon from "@/app/icon.svg";
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "./ui/button";
@@ -10,7 +10,7 @@ export function Header() {
       <div className="mx-auto max-w-page px-[120px] pt-[64px]">
         <div className="flex justify-between border border-primary rounded-full p-[12px] bg-background shadow-[0_0_12px_rgba(0,0,0,0.14)]">
           <Link href="/" className="flex items-center gap-1">
-            <Image src={icon} alt="" width={24} height={24} />
+            <Image src={icon} alt="logo" width={24} height={24} />
             <span className="text-base leading-6 font-extrabold">CINEMA</span>
           </Link>
           <div className="flex items-center gap-4">

@@ -11,7 +11,7 @@ export const GET_CINEMA_TODAY = graphql(`
         genres
         img
         userRatings {
-          kinopoisk
+          imdb
         }
         actors {
           id

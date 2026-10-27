@@ -12,7 +12,7 @@ export const GET_FILM = graphql(`
         genres
         img
         userRatings {
-          kinopoisk
+          imdb
         }
         actors {
           id
