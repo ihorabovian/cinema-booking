@@ -20,7 +20,11 @@ import {
   type SelectedSeat,
 } from "@/lib/booking";
 import { bookingSearchParams } from "@/lib/booking-search-params";
-import { personSchema, type CardDetails } from "@/lib/schemas/booking";
+import {
+  personSchema,
+  type CardDetails,
+  type PersonDetails,
+} from "@/lib/schemas/booking";
 import type { CinemaOrder, Hall } from "@/lib/types/cinema";
 import { useSessionStorage } from "@/lib/use-session-storage";
 
@@ -41,9 +45,11 @@ const queryParsers = {
 type BookingFlowProps = {
   seance: BookingSeance;
   places: Hall["places"];
+  // A signed-in user's details, offered until they enter others.
+  profile: PersonDetails | null;
 };
 
-export function BookingFlow({ seance, places }: BookingFlowProps) {
+export function BookingFlow({ seance, places, profile }: BookingFlowProps) {
   const [query, setQuery] = useQueryStates(queryParsers);
   const [person, setPerson] = useSessionStorage(PERSON_STORAGE_KEY, personSchema);
   // The paid order, shown on the success screen after the URL is cleared.
@@ -151,9 +157,10 @@ export function BookingFlow({ seance, places }: BookingFlowProps) {
 
         {step === 3 && (
           <PersonForm
-            // Saved details arrive after hydration; remounting fills the form with them.
-            key={person ? "saved" : "empty"}
-            defaultValues={person}
+            // Saved details arrive after hydration, and the profile can change while the
+            // page stays mounted; remounting fills the form with whichever applies.
+            key={JSON.stringify(person ?? profile)}
+            defaultValues={person ?? profile ?? undefined}
             onBack={() => goTo(2)}
             onSubmit={(details) => {
               setPerson(details);

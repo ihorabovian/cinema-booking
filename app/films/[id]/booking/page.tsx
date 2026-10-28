@@ -2,6 +2,8 @@ import { notFound } from "next/navigation";
 import type { SearchParams } from "nuqs/server";
 import { BookingFlow } from "@/components/booking/booking-flow";
 import { loadBookingSearchParams } from "@/lib/booking-search-params";
+import { getCurrentUser } from "@/lib/auth";
+import { toPersonDetails } from "@/lib/booking";
 import { getFilm, getSeanceHall } from "@/lib/cinema-api";
 
 export default async function BookingPage({
@@ -18,9 +20,10 @@ export default async function BookingPage({
     notFound();
   }
 
-  const [film, seanceHall] = await Promise.all([
+  const [film, seanceHall, session] = await Promise.all([
     getFilm(id),
     getSeanceHall(id, date, time, hall),
+    getCurrentUser(),
   ]);
 
   if (!seanceHall) {
@@ -38,6 +41,7 @@ export default async function BookingPage({
           hall: seanceHall.name,
         }}
         places={seanceHall.places}
+        profile={session && toPersonDetails(session.user)}
       />
     </main>
   );

@@ -1,12 +1,18 @@
 "use server";
 
 import { updateTag } from "next/cache";
+import { getCurrentUser } from "@/lib/auth";
 import {
   toPaymentInput,
+  toProfileInput,
   type BookingSeance,
   type SelectedSeat,
 } from "@/lib/booking";
-import { createCinemaPayment, getFilmHallsTag } from "@/lib/cinema-api";
+import {
+  createCinemaPayment,
+  getFilmHallsTag,
+  updateProfile,
+} from "@/lib/cinema-api";
 import { cardSchema, personSchema } from "@/lib/schemas/booking";
 import type { CinemaOrder } from "@/lib/types/cinema";
 
@@ -30,11 +36,21 @@ export async function createPayment(
   }
 
   try {
+    const session = await getCurrentUser();
     const order = await createCinemaPayment(
       toPaymentInput(seance, seats, parsedPerson.data, parsedCard.data),
+      session?.token,
     );
     // The seats are sold now: the next hall request must not show them as free.
     updateTag(getFilmHallsTag(seance.filmId));
+
+    if (session) {
+      // The payment carries only names and phone, so city and email reach the profile
+      // here, and the next checkout starts filled in. A failure here doesn't undo the order.
+      await updateProfile(session.token, toProfileInput(parsedPerson.data)).catch(
+        console.error,
+      );
+    }
 
     return { ok: true, order };
   } catch (error) {

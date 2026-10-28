@@ -48,9 +48,9 @@ export function PaymentSuccess({ seance, seats, orderNumber }: PaymentSuccessPro
       </div>
 
       <div className="flex w-full flex-col gap-4 md:w-[398px]">
-        {/* TODO: open the order once the orders page exists */}
-        <Button variant="secondary" className={buttonClassName}>
-          Order details
+        {/* Guests sign in first and then land on their tickets. */}
+        <Button asChild variant="secondary" className={buttonClassName}>
+          <Link href="/tickets">Order details</Link>
         </Button>
         <Button asChild className={buttonClassName}>
           <Link href="/">Back to home</Link>
