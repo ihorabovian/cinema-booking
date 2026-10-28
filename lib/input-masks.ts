@@ -13,6 +13,11 @@ export function maskPhone(value: string) {
   return `(${phone.slice(0, 3)}) ${phone.slice(3, 6)}-${phone.slice(6)}`;
 }
 
+// The API stores phones in E.164: "(416) 555-0123" becomes "+14165550123".
+export function toE164Phone(phone: string) {
+  return `+1${phone.replace(/\D/g, "")}`;
+}
+
 // "4111 1111 1111 1111"
 export function maskCardNumber(value: string) {
   return digits(value, 16).replace(/(\d{4})(?=\d)/g, "$1 ");
