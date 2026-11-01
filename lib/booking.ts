@@ -1,6 +1,7 @@
 import type { SeatRef } from "./booking-search-params";
+import { maskPhone, toE164Phone } from "./input-masks";
 import type { CardDetails, PersonDetails } from "./schemas/booking";
-import type { Hall, PaymentInput } from "./types/cinema";
+import type { Hall, PaymentInput, ProfileInput, User } from "./types/cinema";
 
 // Rows and seats are numbered from 1, the way the hall shows them.
 export type SelectedSeat = SeatRef & {
@@ -64,7 +65,7 @@ function joinWithAnd(items: number[]) {
 }
 
 // "Row 1, seats 5 and 6", one group per row.
-export function formatSeatsByRow(seats: SelectedSeat[]) {
+export function formatSeatsByRow(seats: SeatRef[]) {
   const rows = new Map<number, number[]>();
 
   for (const { row, seat } of seats) {
@@ -103,8 +104,31 @@ export function resolveSeats(places: Hall["places"], refs: SeatRef[]) {
   return sortSeats([...seats.values()]);
 }
 
-// Maps the booking to the createCinemaPayment input. The API numbers seats as columns
-// and expects the phone in E.164: "+14165550123".
+// A signed-in user's profile fills in the checkout details.
+export function toPersonDetails(user: User): PersonDetails {
+  return {
+    lastName: user.lastname ?? "",
+    firstName: user.firstname ?? "",
+    middleName: user.middlename ?? "",
+    phone: maskPhone(user.phone),
+    city: user.city ?? "",
+    email: user.email ?? "",
+  };
+}
+
+// The reverse: details from checkout or the profile form, in updateProfile's shape.
+// The phone is the account's sign-in and never changes this way.
+export function toProfileInput(details: Omit<PersonDetails, "phone">): ProfileInput {
+  return {
+    lastname: details.lastName,
+    firstname: details.firstName,
+    middlename: details.middleName,
+    city: details.city,
+    email: details.email,
+  };
+}
+
+// Maps the booking to the createCinemaPayment input. The API numbers seats as columns.
 export function toPaymentInput(
   seance: BookingSeance,
   seats: SelectedSeat[],
@@ -118,7 +142,7 @@ export function toPaymentInput(
       firstname: person.firstName,
       lastname: person.lastName,
       middlename: person.middleName,
-      phone: `+1${person.phone.replace(/\D/g, "")}`,
+      phone: toE164Phone(person.phone),
     },
     debitCard: card,
     seance: { date: seance.date, time: seance.time },

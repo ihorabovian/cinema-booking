@@ -1,0 +1,6 @@
+import "@testing-library/jest-dom/vitest";
+import { cleanup } from "@testing-library/react";
+import { afterEach } from "vitest";
+
+// Without Vitest globals Testing Library can't unmount on its own between tests.
+afterEach(cleanup);

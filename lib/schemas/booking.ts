@@ -3,9 +3,20 @@ import { z } from "zod";
 // One place for the booking form rules. The forms read these schemas for validation,
 // the asterisk on required fields and their value types.
 
-function requiredText(message: string) {
+export function requiredText(message: string) {
   return z.string().trim().min(1, message);
 }
+
+// "(416) 555-0123", as maskPhone formats it.
+export const phoneSchema = z
+  .string()
+  .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Enter a 10-digit phone number");
+
+export const emailSchema = z
+  .string()
+  .trim()
+  .min(1, "Enter your email")
+  .pipe(z.email("Enter a valid email"));
 
 // Luhn checksum: catches a mistyped digit or two swapped neighbours in a card number.
 function passesLuhn(cardNumber: string) {
@@ -37,11 +48,9 @@ export const personSchema = z.object({
   lastName: requiredText("Enter your last name"),
   firstName: requiredText("Enter your first name"),
   middleName: z.string().trim(),
-  phone: z
-    .string()
-    .regex(/^\(\d{3}\) \d{3}-\d{4}$/, "Enter a 10-digit phone number"),
+  phone: phoneSchema,
   city: requiredText("Enter your city"),
-  email: z.string().trim().min(1, "Enter your email").pipe(z.email("Enter a valid email")),
+  email: emailSchema,
 });
 
 export const cardSchema = z.object({

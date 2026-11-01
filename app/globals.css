@@ -44,6 +44,8 @@
     --color-pink-light: var(--pink-light);
     --color-pink-medium: var(--pink-medium);
     --color-seat: var(--seat);
+    --color-green-light: var(--green-light);
+    --color-red-light: var(--red-light);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -75,6 +77,8 @@
     --pink-light: #ffcdee;
     --pink-medium: #e843b2;
     --seat: #ebebeb;
+    --green-light: #bbf7d0;
+    --red-light: #fecaca;
     --destructive: oklch(0.577 0.245 27.325);
     --border: oklch(0.922 0 0);
     --input: #b7b7b7;
