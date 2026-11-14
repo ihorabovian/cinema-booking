@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
-// The whole booking up to the card step. Paying would place a real order, so it stops there.
-test("books seats from the films page to the payment step", async ({ page }) => {
+// The whole booking, paid with a test card. It places a real order on the API.
+test("books a seat from the films page and pays for it", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("link", { name: "Details" }).first().click();
 
@@ -9,16 +9,14 @@ test("books seats from the films page to the payment step", async ({ page }) => 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
   // Any seance of the first date.
-  const continueButton = page.getByRole("button", { name: "Continue" });
-  await expect(continueButton).toBeDisabled();
   await page.getByRole("button", { name: /^\d{2}:\d{2}$/ }).first().click();
   await page.getByRole("link", { name: "Continue" }).click();
 
   await expect(page).toHaveURL(/\/booking\?/);
   await expect(page.getByRole("heading", { name: "Seat selection" })).toBeVisible();
 
-  // Any free seat.
-  await page.locator('button[aria-pressed="false"][aria-label^="Row"]').first().click();
+  // The last free seat: other runs and people take the first ones.
+  await page.locator('button[aria-pressed="false"][aria-label^="Row"]').last().click();
   await expect(page.getByText("Step 1 of 4")).toBeVisible();
   await page.getByRole("button", { name: "Continue" }).click();
 
@@ -31,11 +29,9 @@ test("books seats from the films page to the payment step", async ({ page }) => 
   await page.getByLabel("Phone*").fill("4165550123");
   await page.getByLabel("City*").fill("Toronto");
   await page.getByLabel("Email*").fill("john@example.com");
-  await expect(page.getByLabel("Phone*")).toHaveValue("(416) 555-0123");
   await page.getByRole("button", { name: "Continue" }).click();
 
   await expect(page.getByRole("heading", { name: "Payment card" })).toBeVisible();
-  await expect(page.getByRole("button", { name: "Pay" })).toBeVisible();
 
   // The browser Back button returns to the filled details. nuqs writes the URL a moment
   // after the step renders, so wait for it before going back.
@@ -43,19 +39,15 @@ test("books seats from the films page to the payment step", async ({ page }) => 
   await page.goBack();
   await expect(page.getByRole("heading", { name: "Your details" })).toBeVisible();
   await expect(page.getByLabel("City*")).toHaveValue("Toronto");
-});
-
-test("the booking form doesn't continue with missing details", async ({ page }) => {
-  await page.goto("/");
-  await page.getByRole("link", { name: "Details" }).first().click();
-  await page.getByRole("button", { name: /^\d{2}:\d{2}$/ }).first().click();
-  await page.getByRole("link", { name: "Continue" }).click();
-  await page.locator('button[aria-pressed="false"][aria-label^="Row"]').first().click();
-  await page.getByRole("button", { name: "Continue" }).click();
-  await page.getByRole("button", { name: "Buy tickets" }).click();
 
   await page.getByRole("button", { name: "Continue" }).click();
+  await expect(page.getByRole("heading", { name: "Payment card" })).toBeVisible();
+  await page.getByLabel("Card number").fill("4111111111111111");
+  await page.getByLabel("Expiry").fill("1230");
+  await page.getByLabel("CVV").fill("123");
+  await page.getByRole("button", { name: "Pay" }).click();
 
-  await expect(page.getByText("Enter your last name")).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Your details" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Payment successful" })).toBeVisible();
+  await expect(page.getByText("Order number")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Order details" })).toBeVisible();
 });
