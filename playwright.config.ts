@@ -17,10 +17,7 @@ export default defineConfig({
     {
       name: "desktop",
       use: { ...devices["Desktop Chrome"], viewport: { width: 1440, height: 900 } },
-      grepInvert: /@mobile/,
     },
-    // Only tests about phone layouts run here, tagged @mobile.
-    { name: "mobile", use: { ...devices["Pixel 7"] }, grep: /@mobile/ },
   ],
   // A production build: what users get, without the dev overlay over the page.
   webServer: {
